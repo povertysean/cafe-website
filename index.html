@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Grind Cafe • North Jakarta</title>
+
+<!-- EmailJS SDK Initialization -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  (function() {
+    emailjs.init("BUYyTvdnj96iE6eE5");
+  })();
+</script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+html { scroll-behavior: smooth; }
+body { background:#fdf9f4; color: #3e2723; line-height: 1.6; padding-top: 100px; }
+
+header { background:#3e2723; color:white; display:flex; justify-content:space-between; align-items:center; padding:14px 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
+.logo { font-size:22px; font-weight:bold; display: flex; align-items: center; gap: 8px; color: #fdf9f4; cursor: pointer; text-decoration: none; }
+nav ul { display:flex; list-style:none; flex-wrap: wrap; }
+nav ul li { margin-left:15px; }
+nav ul li a { color:#e0d0c1; text-decoration:none; font-weight:600; font-size: 14px; transition: all 0.3s ease; padding: 6px 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.08); display: inline-block; cursor: pointer; }
+nav ul li a:hover, nav ul li a.active { color:#ffffff; background: #d18a4d; }
+
+.page-view { 
+  display: none; 
+  opacity: 0; 
+  transition: opacity 0.4s ease-in-out; 
+}
+
+.page-view.active-page { 
+  display: block; 
+  opacity: 1; 
+}
+
+.hero { height:450px; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat; display:flex; justify-content:center; align-items:center; color:white; text-align:center; padding: 20px; border-radius: 0 0 16px 16px; margin: -100px 0 0 0; padding-top: 100px; }
+.hero-text { background:rgba(62, 39, 35, 0.85); padding:28px; border-radius:12px; max-width: 650px; border: 1px solid rgba(255, 255, 255, 0.15); }
+.hero h1 { font-size:34px; margin-bottom: 8px; }
+.hero p { margin-top:6px; font-size:16px; color: #e0d0c1; }
+.btn { display:inline-block; margin-top:18px; background:#d18a4d; color:white; padding:10px 22px; text-decoration:none; border-radius:6px; font-weight:bold; transition: all 0.3s ease; cursor: pointer; border: none; }
+.btn:hover { background: #b0703c; transform: translateY(-2px); }
+
+section { padding:45px 20px; max-width: 1100px; margin: 0 auto; }
+.title { text-align:center; margin-bottom:30px; color:#3e2723; font-size: 26px; position: relative; }
+.title::after { content: ''; display: block; width: 45px; height: 3px; background: #d18a4d; margin: 8px auto 0; border-radius: 2px; }
+
+.about { display:flex; gap:25px; align-items:center; }
+.about img { width:45%; border-radius:12px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); object-fit: cover; height: 320px; }
+.about-text { width:55%; color:#4e342e; }
+.about-text h2 { font-size: 22px; margin-bottom: 10px; color: #3e2723; }
+.about-text p { margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+
+.menu-category { margin-bottom: 40px; }
+.menu-category h3 { font-size: 20px; color: #d18a4d; margin-bottom: 20px; border-bottom: 2px solid #e0d0c1; padding-bottom: 6px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px; }
+.card { background:white; border-radius:12px; padding:16px; box-shadow:0px 4px 15px rgba(0,0,0,0.06); text-align:center; border: 1px solid #efebe9; transition: transform 0.3s ease; }
+.card:hover { transform: translateY(-4px); }
+.card img { width:100%; border-radius:8px; height: 160px; object-fit: cover; display: block; }
+.card h4, .card h3 { margin:12px 0 4px; color:#3e2723; font-size: 18px; }
+.card .price { color: #d18a4d; font-weight: bold; font-size: 14px; margin-bottom: 6px; }
+.card p { color: #6d4c41; font-size: 13px; }
+
+.gallery-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:25px; }
+.gallery-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #efebe9; transition: transform 0.3s ease; }
+.gallery-item:hover { transform: translateY(-4px); }
+.gallery-item img { width:100%; height: 210px; object-fit: cover; display: block; }
+.gallery-content { padding: 18px; }
+.gallery-content h3 { font-size: 18px; color: #3e2723; margin-bottom: 6px; }
+.gallery-content p { font-size: 13px; color: #6d4c41; line-height: 1.5; }
+
+.contact { display:grid; grid-template-columns:1fr 1fr; gap:25px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #efebe9; }
+input, textarea { width:100%; padding:12px; margin-bottom:12px; background:#faf7f5; border: 1px solid #d7ccc8; border-radius: 6px; font-size: 14px; font-family: inherit; outline: none; }
+input:focus, textarea:focus { border-color: #8d6e63; background: #fff; }
+.contact-btn { background:#3e2723; color:white; padding:12px 20px; border:none; border-radius: 6px; cursor:pointer; font-weight: bold; font-size: 14px; transition: background 0.3s ease; width: 100%; }
+.contact-btn:hover { background: #d18a4d; }
+.contact-info h3 { font-size: 19px; margin-bottom: 12px; color: #3e2723; }
+.contact-info p { margin-bottom: 8px; font-size: 14px; color: #4e342e; }
+
+footer { background:#3e2723; color:#e0d0c1; text-align:center; padding:20px; margin-top: 30px; font-size: 13px; }
+
+@media(max-width:768px){
+  header { flex-direction: column; padding: 10px; text-align: center; }
+  nav ul { justify-content: center; gap: 4px; margin-top: 6px; }
+  nav ul li { margin-left: 0; }
+  .about { flex-direction:column; }
+  .about img, .about-text { width:100%; }
+  .contact { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a onclick="switchPage('home')" class="logo"><span>☕</span> The Daily Grind Cafe</a>
+  <nav>
+    <ul>
+      <li><a id="nav-home" onclick="switchPage('home')" class="active">Home</a></li>
+      <li><a id="nav-about" onclick="switchPage('about')">Story</a></li>
+      <li><a id="nav-menu" onclick="switchPage('menu')">Menu</a></li>
+      <li><a id="nav-events" onclick="switchPage('events')">Events</a></li>
+      <li><a id="nav-gallery" onclick="switchPage('gallery')">Gallery</a></li>
+      <li><a id="nav-visit" onclick="switchPage('visit')">Visit</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="page-home" class="page-view active-page">
+  <section style="max-width: 100%; width: 100%; padding: 0;">
+    <div class="hero">
+      <div class="hero-text">
+        <h1>Welcome to The Daily Grind Cafe</h1>
+        <p>Brewing Passion • Daily Inspiration • Local Flavor</p>
+        <button onclick="switchPage('menu')" class="btn">Explore Expanded Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="title">Our Story</h2>
+    <div class="about">
+      <img src='https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80' alt="Our Cozy Atmosphere">
+      <div class="about-text">
+        <h2>Exquisite Beans for Your Daily Grind</h2>
+        <p>Welcome to our cafe, a place where coffee, community, creativity, and comfort come together in North Jakarta.</p>
+        <p>Our cafe believes that great coffee isn't just a drink, but an experience that fuels conversation, nurtures ideas, and builds community.</p>
+        <p><strong>Our Vision:</strong> To be a beloved community hub where passion for coffee and connections flourish.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-about" class="page-view">
+  <section>
+    <h2 class="title">Our Full Story & Mission</h2>
+    <div class="about" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #efebe9;">
+      <img src='https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80' alt="Our Cozy Atmosphere">
+      <div class="about-text">
+        <h2>Exquisite Beans for Your Daily Grind</h2>
+        <p>Founded in North Jakarta, The Daily Grind Cafe started with a simple belief: that coffee has the power to bring people together. Every cup we serve is a testament to our dedication to quality, sustainability, and craftsmanship.</p>
+        <p><strong>Our Mission:</strong><br>
+        • Source and roast the finest beans with care.<br>
+        • Craft exceptional beverages that delight the senses.<br>
+        • Champion sustainability in all our practices.</p>
+        <p style="margin-top: 15px;"><b>Together, we brew. Together, we connect.</b></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-menu" class="page-view">
+  <section>
+    <h2 class="title">Our Expanded Cafe Menu</h2>
+
+    <div class="menu-category">
+      <h3>☕ Specialty Coffee & Drinks</h3>
+      <div class="cards">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=800&q=80" alt="Signature Latte">
+          <h4>Caramel Vanilla Latte</h4>
+          <div class="price">Rp 42.000</div>
+          <p>Double-shot espresso with steamed milk, organic vanilla, and house-made caramel drizzle.</p>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80" alt="Matcha Latte">
+          <h4>Ceremonial Matcha Latte</h4>
+          <div class="price">Rp 45.000</div>
+          <p>Authentic Japanese green tea stone-ground powder whisked smooth with oat milk.</p>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=800&q=80" alt="Cold Brew">
+          <h4>Nitro Cold Brew</h4>
+          <div class="price">Rp 38.000</div>
+          <p>Steeped for 24 hours and infused with nitrogen for a velvety, stout-like creamy texture.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>🥐 Bakery & Artisan Pastries</h3>
+      <div class="cards">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80" alt="Croissant">
+          <h4>Butter Croissant</h4>
+          <div class="price">Rp 28.000</div>
+          <p>Flaky, golden-brown French pastry baked fresh every morning with pure butter.</p>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80" alt="Almond Pain au Chocolat">
+          <h4>Almond Pain au Chocolat</h4>
+          <div class="price">Rp 34.000</div>
+          <p>Rich dark chocolate wrapped in flaky pastry topped with frangipane and toasted almond slices.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>🥑 All-Day Brunch & Gourmet Bites</h3>
+      <div class="cards">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80" alt="Avocado Toast">
+          <h4>Smashed Avocado Toast</h4>
+          <div class="price">Rp 55.000</div>
+          <p>Hass avocado, poached farm egg, crumbled feta, and chili flakes on artisanal sourdough.</p>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Acai Bowl">
+          <h4>Superfood Acai Bowl</h4>
+          <div class="price">Rp 60.000</div>
+          <p>Blended organic acai berries topped with granola, fresh seasonal fruits, and chia seeds.</p>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=80" alt="Club Sandwich">
+          <h4>Truffle Chicken Sandwich</h4>
+          <div class="price">Rp 65.000</div>
+          <p>Grilled chicken breast, crisp lettuce, melted cheese, and truffle aioli on toasted ciabatta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-events" class="page-view">
+  <section>
+    <h2 class="title">Cafe Happenings & Events</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80" alt="Open Mic Night">
+        <h3>🏆 Open Mic Night</h3>
+        <p>Join us every Friday evening from 7 PM onwards for acoustic live music, poetry, and good community vibes.</p>
+      </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80" alt="Brewing Workshop">
+        <h3>🎓 Brewing Workshop</h3>
+        <p>Learn professional manual pour-over, latte art, and espresso extraction techniques with our head barista.</p>
+      </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80" alt="Local Author Reading">
+        <h3>📚 Local Author Reading</h3>
+        <p>Meet indie and local Indonesian authors for intimate book readings, signings, and interactive panel discussions.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-gallery" class="page-view">
+  <section>
+    <h2 class="title">Atmosphere & Creations</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src='https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=800&q=80' alt="Barista at work">
+        <div class="gallery-content">
+          <h3>The Craft of Extraction</h3>
+          <p>Our skilled baristas meticulously calibrate every pour-over and espresso shot, blending intense aromas with precise water temperature to highlight unique bean notes.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80' alt="Fresh bowl">
+        <div class="gallery-content">
+          <h3>Vibrant & Wholesome Bites</h3>
+          <p>Every dish is crafted using hand-picked, garden-fresh ingredients designed to give you a clean, nourishing start to your morning or a refreshing afternoon boost.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src='https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=800&q=80' alt="Cafe exterior view">
+        <div class="gallery-content">
+          <h3>Welcoming Facade</h3>
+          <p>Nestled in the heart of North Jakarta, our warm, earth-toned exterior invites you to step away from the bustling city streets into a calm sanctuary.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src='https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80' alt="Interior seating">
+        <div class="gallery-content">
+          <h3>Inviting Interior Seating</h3>
+          <p>Featuring plush velvet armchairs, warm pendant lighting, and rustic wooden communal tables tailored for deep conversations or focused remote work sessions.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src='https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80' alt="Cozy corners">
+        <div class="gallery-content">
+          <h3>Quiet Reading Corners</h3>
+          <p>Tucked away near sunlit windows, our quiet lounge spots offer the perfect sanctuary to unwind with a good book and a steaming mug of hot cocoa or tea.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item">
+        <img src='https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=800&q=80' alt="Latte art">
+        <div class="gallery-content">
+          <h3>Masterpiece Latte Art</h3>
+          <p>A harmonious marriage of rich microfoam and heavy espresso crema, transforming every single latte into a fleeting piece of edible canvas art.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-visit" class="page-view">
+  <section>
+    <h2 class="title">Visit Us</h2>
+    <div class="contact">
+      <div>
+        <form id="contact-form">
+          <input type="text" name="user_name" placeholder="Your Name" required>
+          <input type="email" name="user_email" placeholder="Email Address" required>
+          <textarea rows="4" name="message" placeholder="Message or Catering Inquiry" required></textarea>
+          <button type="submit" class="contact-btn" id="submit-btn">Send Message</button>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <h3>Cafe Location & Hours</h3>
+        <p>📍 <strong>The Daily Grind Cafe</strong><br>Jl. Kenanga Raya No. 27, Kelurahan Sunter Agung, Kecamatan Tanjung Priok, Jakarta Utara</p>
+        <p>📞 +62 21 555 0192</p>
+        <p>📧 dailygrindcafe@outlook.co.id</p>
+        <br>
+        <p><strong>Opening Hours:</strong><br>
+        Monday – Friday: 7:00 AM – 8:00 PM<br>
+        Saturday – Sunday: 8:00 AM – 9:00 PM</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  © 2026 The Daily Grind Cafe • North Jakarta. All rights reserved.
+</footer>
+
+<script>
+window.switchPage = function(pageId) {
+  var pages = document.querySelectorAll('.page-view');
+
+  for (var i = 0; i < pages.length; i++) {
+    if (pages[i].classList.contains('active-page')) {
+      pages[i].style.opacity = '0';
+    }
+  }
+
+  setTimeout(function() {
+    for (var j = 0; j < pages.length; j++) {
+      pages[j].classList.remove('active-page');
+    }
+
+    var targetPage = document.getElementById('page-' + pageId);
+
+    if (targetPage) {
+      targetPage.classList.add('active-page');
+
+      setTimeout(function() {
+        targetPage.style.opacity = '1';
+      }, 20);
+    }
+
+    var navLinks = document.querySelectorAll('nav ul li a');
+
+    for (var k = 0; k < navLinks.length; k++) {
+      navLinks[k].classList.remove('active');
+    }
+
+    var activeNav = document.getElementById('nav-' + pageId);
+
+    if (activeNav) {
+      activeNav.classList.add('active');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 200);
+};
+
+// Form Submission Handling with EmailJS
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'Sending...';
+
+  emailjs.sendForm('service_q4n173n', 'template_r27kl4i', this)
+    .then(function() {
+      alert('Message sent successfully!');
+      btn.textContent = 'Send Message';
+      document.getElementById('contact-form').reset();
+    }, function(error) {
+      alert('Failed to send message: ' + JSON.stringify(error));
+      btn.textContent = 'Send Message';
+    });
+});
+</script>
+
+</body>
+</html>
